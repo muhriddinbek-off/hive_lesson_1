@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     var name = Hive.box('myBox');
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
         centerTitle: true,
         title: const Text('Home Page'),
       ),
