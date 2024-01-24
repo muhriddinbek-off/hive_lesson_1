@@ -10,6 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController title = TextEditingController();
+  TextEditingController edit = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +36,67 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 30),
             ElevatedButton(
                 onPressed: () {
-                  name.put(1, title.text);
+                  name.add(title.text);
+                  title.clear();
                 },
                 child: const Text('Add user change')),
             const SizedBox(height: 20),
-            Text('${name.get(1)}', style: const TextStyle(fontSize: 30)),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: name.values.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Text('${index + 1}'),
+                      ),
+                      title: Text(name.values.toList()[index]),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              edit.text = name.values.toList()[index];
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(18.0),
+                                          child: TextField(
+                                            controller: edit,
+                                            decoration: const InputDecoration(
+                                              hintText: 'Edit',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              name.putAt(index, edit.text);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Edit')),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.cancel),
+                            onPressed: () {
+                              name.deleteAt(index);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            ),
           ],
         ),
       ),
