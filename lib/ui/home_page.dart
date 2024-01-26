@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_database/ui/second_example/second_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +18,6 @@ class _HomePageState extends State<HomePage> {
     var name = Hive.box('myBox');
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
         centerTitle: true,
         title: const Text('Home Page'),
       ),
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 30),
             ElevatedButton(
                 onPressed: () {
+                  setState(() {});
                   name.add(title.text);
                   title.clear();
                 },
@@ -100,6 +101,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SecondPage(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
